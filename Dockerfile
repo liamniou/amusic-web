@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # AppleMusicDecrypt comes from the amd/ git submodule (liamniou/AppleMusicDecrypt, branch v2)
 
-FROM python:3.12-slim-bookworm AS tools
+FROM python:3.14-slim-bookworm AS tools
 RUN apt-get update \
  && apt-get install -y --no-install-recommends build-essential pkg-config git zlib1g-dev cmake ca-certificates \
  && rm -rf /var/lib/apt/lists/*
@@ -12,7 +12,7 @@ RUN git clone --depth=1 https://github.com/axiomatic-systems/Bento4.git /src/Ben
  && cmake -DCMAKE_BUILD_TYPE=Release .. && make -j"$(nproc)" mp4edit mp4extract mp4decrypt \
  && install -m 0755 mp4edit mp4extract mp4decrypt /out/usr/local/bin/
 
-FROM python:3.12-slim-bookworm
+FROM python:3.14-slim-bookworm
 ENV PYTHONUNBUFFERED=1 PYTHONDONTWRITEBYTECODE=1 PIP_NO_CACHE_DIR=1 AMD_DIR=/amd DATA_DIR=/data HOME=/tmp
 RUN apt-get update \
  && apt-get install -y --no-install-recommends ffmpeg git ca-certificates \
