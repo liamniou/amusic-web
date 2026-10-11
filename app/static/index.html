@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apple Music → Navidrome</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎧</text></svg>">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div id="login" class="login hidden">
+    <form id="login-form" class="card login-card">
+      <h1>🎧 Apple Music → Navidrome</h1>
+      <p class="muted">Sign in with your Navidrome account</p>
+      <input name="username" placeholder="Username" autocomplete="username" required>
+      <input name="password" type="password" placeholder="Password" autocomplete="current-password" required>
+      <button class="btn primary" type="submit">Sign in</button>
+      <p id="login-error" class="error"></p>
+    </form>
+  </div>
+
+  <div id="app" class="hidden">
+    <header class="topbar">
+      <a href="#/" class="brand">🎧 <span>AM → ND</span></a>
+      <form id="search-form" class="search">
+        <input id="search-input" placeholder="Search Apple Music or paste a music.apple.com link…" autocomplete="off">
+        <button class="btn primary" type="submit">Go</button>
+      </form>
+      <nav class="nav">
+        <button id="wm-status" class="pill" title="wrapper-manager status">wrapper…</button>
+        <a href="#/jobs" class="navlink">Jobs <span id="active-count" class="count hidden"></span></a>
+        <a id="nd-link" class="navlink" target="_blank" rel="noopener">Navidrome ↗</a>
+        <button id="logout" class="btn ghost small" title="Sign out">⎋</button>
+      </nav>
+    </header>
+    <main id="view"></main>
+  </div>
+
+  <dialog id="dl-dialog">
+    <form method="dialog" id="dl-form">
+      <h2>Download</h2>
+      <div class="dl-target" id="dl-target"></div>
+      <label>Codec
+        <select name="codec">
+          <option value="alac">ALAC → FLAC (lossless)</option>
+          <option value="aac-legacy">AAC 256 → MP3 320</option>
+          <option value="aac">AAC (HE/enhanced) → MP3 320</option>
+          <option value="ec3">Dolby Atmos (E-AC-3, kept as M4A)</option>
+        </select>
+      </label>
+      <label class="check"><input type="checkbox" name="fallback_aac" checked> Fall back to AAC if lossless is unavailable</label>
+      <label>Tracks you already have
+        <select name="existing">
+          <option value="library">Skip if already in Navidrome (any copy, ISRC match)</option>
+          <option value="file">Skip only if already downloaded here</option>
+          <option value="overwrite">Re-download and overwrite</option>
+        </select>
+      </label>
+      <div id="dl-playlist-opts">
+        <label class="check"><input type="checkbox" name="create_playlist" checked> Create / update Navidrome playlist</label>
+        <label>Playlist name <input name="playlist_name"></label>
+      </div>
+      <div id="dl-artist-opts">
+        <label class="check"><input type="checkbox" name="include_participate"> Download all songs the artist appears on (instead of their albums)</label>
+      </div>
+      <menu>
+        <button class="btn ghost" value="cancel" formnovalidate>Cancel</button>
+        <button class="btn primary" value="ok">Queue download</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <dialog id="wm-dialog">
+    <form id="wm-form">
+      <h2>Apple Music account</h2>
+      <p id="wm-info" class="muted"></p>
+      <p class="sub">Logs an Apple ID into wrapper-manager. Needed after wrapper-manager restarts or when the wrapper keeps going down.</p>
+      <div id="wm-step-login">
+        <label>Apple ID <input name="username" autocomplete="off" spellcheck="false"></label>
+        <label>Password <input name="password" type="password" autocomplete="off"></label>
+      </div>
+      <div id="wm-step-2fa" class="hidden">
+        <label>Two-factor code <input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="12"></label>
+      </div>
+      <p id="wm-msg" class="muted"></p>
+      <menu>
+        <button type="button" class="btn ghost" id="wm-close">Close</button>
+        <button type="submit" class="btn primary" id="wm-submit">Sign in</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

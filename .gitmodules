@@ -1,0 +1,4 @@
+[submodule "amd"]
+	path = amd
+	url = https://github.com/liamniou/AppleMusicDecrypt.git
+	branch = v2
